@@ -1,3 +1,4 @@
+import { Slider, SliderThumb } from "@/components/ui/slider";
 import { clamp } from "@/lib/math/utils";
 import { useSlider, useSliderBox } from "@/store";
 import { useCallback, useLayoutEffect, useRef } from "react";
@@ -122,6 +123,16 @@ function ColorPicker() {
   return (
     <div id="color-picker" className="min-h-40 w-60 bg-black flex flex-col">
       <ColorCanvas />
+      <div className="p-2">
+        <Slider
+          defaultValue={[0]}
+          max={360}
+          step={1}
+          className="bg-rainbow h-2.5 rounded-2xl"
+        >
+          <SliderThumb className="box-content size-3 rounded-none bg-amber-400" />
+        </Slider>
+      </div>
     </div>
   );
 }
