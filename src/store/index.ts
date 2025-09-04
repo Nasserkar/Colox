@@ -4,6 +4,8 @@ import { create } from "zustand";
 type ColorPickerState = {
   hue: number;
   setHue: (newHue: number) => void;
+  alpha: number;
+  setAlpha: (newAlpha: number) => void;
 };
 
 type SliderState = {
@@ -27,6 +29,8 @@ type SliderBoxState = {
 export const useColorPicker = create<ColorPickerState>()((set) => ({
   hue: 0,
   setHue: (hue) => set({ hue }),
+  alpha: 100,
+  setAlpha: (alpha) => set({ alpha }),
 }));
 
 export const useSlider = create<SliderState>()((set) => ({

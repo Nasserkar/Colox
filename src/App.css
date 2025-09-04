@@ -29,6 +29,15 @@
   }
   .black-overlay {
     background: linear-gradient(0deg, #000000, transparent);
-    box-shadow: inset 0 0 0 0.5px rgba(25, 23, 28, 0.1);
+    box-shadow: inset 0 0 0 0.5px #1717171a;
+  }
+  .alpha-bg {
+    background-image: conic-gradient(
+      transparent 90deg,
+      #ffffff1a 90deg 180deg,
+      transparent 180deg 270deg,
+      #ffffff1a 270deg
+    );
+    background-size: 10px 10px;
   }
 }

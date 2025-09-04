@@ -131,17 +131,19 @@ function ColorCanvas() {
 function ColorPicker() {
   const hue = useColorPicker((state) => state?.hue);
   const setHue = useColorPicker((state) => state?.setHue);
+  const alpha = useColorPicker((state) => state?.alpha);
+  const setAlpha = useColorPicker((state) => state?.setAlpha);
 
   return (
     <div id="color-picker" className="min-h-40 w-60 bg-black flex flex-col">
       <ColorCanvas />
-      <div className="px-2 py-4">
+      <div className="px-2 py-3">
         <Slider
           defaultValue={[0]}
           max={360}
           step={1}
           className="bg-rainbow h-2.5 rounded-2xl"
-          onValueChange={(e) => setHue(Number(e))}
+          onValueChange={(e) => setHue(e[0])}
         >
           <SliderThumb
             className="box-content size-3 rounded-none"
@@ -150,6 +152,27 @@ function ColorPicker() {
             }}
           />
         </Slider>
+      </div>
+      <div className="px-2 py-3">
+        <div className="alpha-bg">
+          <Slider
+            defaultValue={[100]}
+            max={100}
+            step={1}
+            className="h-2.5 rounded-2xl"
+            onValueChange={(e) => setAlpha(e[0])}
+            style={{
+              background: `linear-gradient( to right, transparent,${hslaToHex({ h: hue, s: 100, l: 50, a: 1 })})`,
+            }}
+          >
+            <SliderThumb
+              className="box-content size-3 rounded-none"
+              style={{
+                background: `${hslaToHex({ h: hue, s: 100, l: 50, a: alpha / 100 })}`,
+              }}
+            />
+          </Slider>
+        </div>
       </div>
     </div>
   );
