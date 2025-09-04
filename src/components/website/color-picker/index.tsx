@@ -1,13 +1,16 @@
 import { Slider, SliderThumb } from "@/components/ui/slider";
+import { hslaToHex } from "@/lib/math/colors";
 import { clamp } from "@/lib/math/utils";
-import { useSlider, useSliderBox } from "@/store";
-import { useCallback, useLayoutEffect, useRef } from "react";
+import { useColorPicker, useSlider, useSliderBox } from "@/store";
+import { useCallback, useEffect, useLayoutEffect, useRef } from "react";
 
 function ColorCanvas() {
   const sliderRef = useRef<HTMLDivElement>(null);
   const sliderBoxRef = useRef<HTMLDivElement>(null);
 
   const draggingRef = useRef(false);
+
+  const hue = useColorPicker((state) => state?.hue);
 
   const size = useSlider((state) => state?.size);
   const setSize = useSlider((state) => state?.setSize);
@@ -21,6 +24,12 @@ function ColorCanvas() {
   const setBoxHeight = useSliderBox((state) => state?.setHeight);
   const boxWidth = useSliderBox((state) => state?.width);
   const setBoxWidth = useSliderBox((state) => state?.setWidth);
+  const boxBg = useSlider((state) => state?.bg);
+  const setBoxBg = useSlider((state) => state?.setBg);
+
+  useEffect(() => {
+    setBoxBg(hslaToHex({ h: hue, s: 100, l: 50, a: 1 }));
+  }, [setBoxBg, hue]);
 
   useLayoutEffect(() => {
     if (sliderRef?.current) {
@@ -86,7 +95,7 @@ function ColorCanvas() {
       id="color-canvas"
       className="w-full h-50 flex items-center justify-center relative my-4 hue-overlay"
       style={{
-        backgroundColor: "#ff0000",
+        backgroundColor: boxBg,
       }}
     >
       <div id="light-overlay" className="absolute inset-0 white-overlay">
@@ -120,17 +129,26 @@ function ColorCanvas() {
 }
 
 function ColorPicker() {
+  const hue = useColorPicker((state) => state?.hue);
+  const setHue = useColorPicker((state) => state?.setHue);
+
   return (
     <div id="color-picker" className="min-h-40 w-60 bg-black flex flex-col">
       <ColorCanvas />
-      <div className="p-2">
+      <div className="px-2 py-4">
         <Slider
           defaultValue={[0]}
           max={360}
           step={1}
           className="bg-rainbow h-2.5 rounded-2xl"
+          onValueChange={(e) => setHue(Number(e))}
         >
-          <SliderThumb className="box-content size-3 rounded-none bg-amber-400" />
+          <SliderThumb
+            className="box-content size-3 rounded-none"
+            style={{
+              backgroundColor: hslaToHex({ h: hue, s: 100, l: 50, a: 1 }),
+            }}
+          />
         </Slider>
       </div>
     </div>

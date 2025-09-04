@@ -1,6 +1,11 @@
 import type { POS } from "@/types";
 import { create } from "zustand";
 
+type ColorPickerState = {
+  hue: number;
+  setHue: (newHue: number) => void;
+};
+
 type SliderState = {
   setX: (newX: number) => void;
   setY: (newY: number) => void;
@@ -15,7 +20,14 @@ type SliderBoxState = {
   setHeight: (newHeight: number) => void;
   width: number;
   setWidth: (newWidth: number) => void;
+  bg: string;
+  setBg: (newBg: string) => void;
 };
+
+export const useColorPicker = create<ColorPickerState>()((set) => ({
+  hue: 0,
+  setHue: (hue) => set({ hue }),
+}));
 
 export const useSlider = create<SliderState>()((set) => ({
   x: 240,
@@ -33,4 +45,6 @@ export const useSliderBox = create<SliderBoxState>()((set) => ({
   setHeight: (height) => set({ height }),
   width: 240,
   setWidth: (height) => set({ height }),
+  bg: "#ff0000",
+  setBg: (bg) => set({ bg }),
 }));
