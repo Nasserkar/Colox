@@ -1,7 +1,26 @@
+function ColorCanvas() {
+  return (
+    <div
+      id="color-canvas"
+      className="w-full h-50 flex items-center justify-center relative my-4 hue-overlay"
+      style={{
+        backgroundColor: "red",
+      }}
+    >
+      <div id="light-overlay" className="absolute inset-0 white-overlay">
+        <div
+          id="black-overlay"
+          className="absolute inset-0 black-overlay"
+        ></div>
+      </div>
+    </div>
+  );
+}
+
 function ColorPicker() {
   return (
-    <div className="min-h-40 w-60 bg-black flex flex-col">
-      <div></div>
+    <div id="color-picker" className="min-h-40 w-60 bg-black flex flex-col">
+      <ColorCanvas />
     </div>
   );
 }
