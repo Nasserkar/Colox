@@ -1,8 +1,16 @@
+import { Route, Routes } from "react-router-dom";
+import { RootLayout } from "@/layouts";
+import { Home } from "@/pages/Home";
+
 function App() {
   return (
-    <div>
-      <h1>Home Page</h1>
-    </div>
+    <>
+      <Routes>
+        <Route element={<RootLayout />}>
+          <Route index element={<Home />} />
+        </Route>
+      </Routes>
+    </>
   );
 }
 
