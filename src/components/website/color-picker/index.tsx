@@ -162,6 +162,67 @@ const ColorCanvas = memo(() => {
   );
 });
 
+const HueSlider = memo(() => {
+  const hue = useColorPicker((state) => state?.hue);
+  const setHue = useColorPicker((state) => state?.setHue);
+
+  const handleHueInput = useCallback(
+    (e: number[]) => {
+      setHue(e[0]);
+    },
+    [setHue]
+  );
+
+  return (
+    <div className="bg-rainbow">
+      <Slider
+        defaultValue={[0]}
+        value={[hue]}
+        max={360}
+        step={1}
+        className="h-2.5"
+        onValueChange={handleHueInput}
+      >
+        <SliderThumb
+          className="box-content size-3 rounded-none"
+          style={{
+            backgroundColor: hslaToHex({ h: hue, s: 100, l: 50, a: 1 }),
+          }}
+        />
+      </Slider>
+    </div>
+  );
+});
+
+const AlphaSlider = memo(() => {
+  const hue = useColorPicker((state) => state?.hue);
+  const alpha = useColorPicker((state) => state?.alpha);
+  const setAlpha = useColorPicker((state) => state?.setAlpha);
+
+  return (
+    <div className="bg-alpha">
+      <Slider
+        defaultValue={[100]}
+        value={[alpha]}
+        max={100}
+        step={1}
+        className="h-2.5"
+        onValueChange={(e) => setAlpha(e[0])}
+        style={{
+          background: `linear-gradient( to right, transparent 0%,${hslaToHex({ h: hue, s: 100, l: 50, a: 1 })} 100%)`,
+        }}
+      >
+        <SliderThumb
+          className="box-content size-3 rounded-none"
+          style={{
+            background: `${hslaToHex({ h: hue, s: 100, l: 50, a: alpha / 100 })}`,
+          }}
+        />
+      </Slider>
+    </div>
+  );
+});
+
 const ColorInput = memo(() => {
   const [text, setText] = useState<string>("#ff0000");
 
@@ -235,73 +296,12 @@ const ColorInput = memo(() => {
         autoCorrect="off"
         autoComplete="off"
         autoCapitalize="off"
-        className="bg-white/10 text-purple-200 font-medium"
+        className="bg-white/10 text-purple-200 text-sm font-medium"
         value={text}
         onChange={handleColorInput}
         onBlur={handleInputBlur}
         onKeyDown={handleKeyDown}
       />
-    </div>
-  );
-});
-
-const AlphaSlider = memo(() => {
-  const hue = useColorPicker((state) => state?.hue);
-  const alpha = useColorPicker((state) => state?.alpha);
-  const setAlpha = useColorPicker((state) => state?.setAlpha);
-
-  return (
-    <div className="bg-alpha">
-      <Slider
-        defaultValue={[100]}
-        value={[alpha]}
-        max={100}
-        step={1}
-        className="h-2.5 rounded-2xl"
-        onValueChange={(e) => setAlpha(e[0])}
-        style={{
-          background: `linear-gradient( to right, transparent 0%,${hslaToHex({ h: hue, s: 100, l: 50, a: 1 })} 100%)`,
-        }}
-      >
-        <SliderThumb
-          className="box-content size-3 rounded-none"
-          style={{
-            background: `${hslaToHex({ h: hue, s: 100, l: 50, a: alpha / 100 })}`,
-          }}
-        />
-      </Slider>
-    </div>
-  );
-});
-
-const HueSlider = memo(() => {
-  const hue = useColorPicker((state) => state?.hue);
-  const setHue = useColorPicker((state) => state?.setHue);
-
-  const handleHueInput = useCallback(
-    (e: number[]) => {
-      setHue(e[0]);
-    },
-    [setHue]
-  );
-
-  return (
-    <div className="bg-rainbow">
-      <Slider
-        defaultValue={[0]}
-        value={[hue]}
-        max={360}
-        step={1}
-        className="h-2.5 rounded-2xl"
-        onValueChange={handleHueInput}
-      >
-        <SliderThumb
-          className="box-content size-3 rounded-none"
-          style={{
-            backgroundColor: hslaToHex({ h: hue, s: 100, l: 50, a: 1 }),
-          }}
-        />
-      </Slider>
     </div>
   );
 });

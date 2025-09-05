@@ -14,8 +14,65 @@
   );
 }
 
+@layer base {
+  @font-face {
+    font-family: Inter;
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: url("/fonts/Inter-Bold.ttf") format("ttf");
+  }
+  @font-face {
+    font-family: Inter;
+    font-style: italic;
+    font-weight: 600;
+    font-display: swap;
+    src: url("/fonts/Inter-SemiBold.woff2") format("ttf");
+  }
+  @font-face {
+    font-family: Inter;
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+    src: url("/fonts/Inter-Medium.ttf") format("ttf");
+  }
+  @font-face {
+    font-family: Inter;
+    font-style: italic;
+    font-weight: 400;
+    font-display: swap;
+    src: url("/fonts/Inter-Regualar.ttf") format("ttf");
+  }
+}
+
 @theme inline {
   --background-image-rainbow: var(--rainbow);
+
+  --font-inter: var(--font-inter), "sans-serif";
+}
+
+@layer base {
+  :root {
+    --font-inter: Inter;
+  }
+  html {
+    @apply scroll-smooth scroll-none;
+  }
+  body,
+  main {
+    @apply min-h-screen w-full;
+  }
+  body {
+    @apply bg-white text-black font-inter antialiased;
+  }
+}
+
+@utility scroll-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 @layer components {
