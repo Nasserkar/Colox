@@ -8,6 +8,7 @@ import {
 } from "@/lib/math/utils";
 import { useColorPicker, useSlider, useSliderBox } from "@/store";
 import React, {
+  memo,
   useCallback,
   useEffect,
   useLayoutEffect,
@@ -15,7 +16,7 @@ import React, {
   useState,
 } from "react";
 
-function ColorCanvas() {
+const ColorCanvas = memo(() => {
   const sliderRef = useRef<HTMLDivElement>(null);
   const sliderBoxRef = useRef<HTMLDivElement>(null);
 
@@ -159,9 +160,9 @@ function ColorCanvas() {
       </div>
     </div>
   );
-}
+});
 
-function ColorInput() {
+const ColorInput = memo(() => {
   const [text, setText] = useState<string>("#ff0000");
 
   const color = useColorPicker((state) => state?.color);
@@ -221,13 +222,40 @@ function ColorInput() {
       />
     </div>
   );
-}
+});
 
-function ColorPicker() {
+const AlphaSlider = memo(() => {
   const hue = useColorPicker((state) => state?.hue);
-  const setHue = useColorPicker((state) => state?.setHue);
   const alpha = useColorPicker((state) => state?.alpha);
   const setAlpha = useColorPicker((state) => state?.setAlpha);
+
+  return (
+    <div className="bg-alpha">
+      <Slider
+        defaultValue={[100]}
+        value={[alpha]}
+        max={100}
+        step={1}
+        className="h-2.5 rounded-2xl"
+        onValueChange={(e) => setAlpha(e[0])}
+        style={{
+          background: `linear-gradient( to right, transparent 0%,${hslaToHex({ h: hue, s: 100, l: 50, a: 1 })} 100%)`,
+        }}
+      >
+        <SliderThumb
+          className="box-content size-3 rounded-none"
+          style={{
+            background: `${hslaToHex({ h: hue, s: 100, l: 50, a: alpha / 100 })}`,
+          }}
+        />
+      </Slider>
+    </div>
+  );
+});
+
+const HueSlider = memo(() => {
+  const hue = useColorPicker((state) => state?.hue);
+  const setHue = useColorPicker((state) => state?.setHue);
 
   const handleHueInput = useCallback(
     (e: number[]) => {
@@ -237,50 +265,37 @@ function ColorPicker() {
   );
 
   return (
+    <div className="bg-rainbow">
+      <Slider
+        defaultValue={[0]}
+        value={[hue]}
+        max={360}
+        step={1}
+        className="h-2.5 rounded-2xl"
+        onValueChange={handleHueInput}
+      >
+        <SliderThumb
+          className="box-content size-3 rounded-none"
+          style={{
+            backgroundColor: hslaToHex({ h: hue, s: 100, l: 50, a: 1 }),
+          }}
+        />
+      </Slider>
+    </div>
+  );
+});
+
+export const ColorPicker = memo(() => {
+  return (
     <div id="color-picker" className="min-h-40 w-60 bg-black flex flex-col">
       <ColorCanvas />
       <div className="px-4 py-2">
-        <Slider
-          defaultValue={[0]}
-          value={[hue]}
-          max={360}
-          step={1}
-          className="bg-rainbow h-2.5 rounded-2xl"
-          onValueChange={handleHueInput}
-        >
-          <SliderThumb
-            className="box-content size-3 rounded-none"
-            style={{
-              backgroundColor: hslaToHex({ h: hue, s: 100, l: 50, a: 1 }),
-            }}
-          />
-        </Slider>
+        <HueSlider />
       </div>
       <div className="px-4 py-2">
-        <div className="alpha-bg">
-          <Slider
-            defaultValue={[100]}
-            value={[alpha]}
-            max={100}
-            step={1}
-            className="h-2.5 rounded-2xl"
-            onValueChange={(e) => setAlpha(e[0])}
-            style={{
-              background: `linear-gradient( to right, transparent 0%,${hslaToHex({ h: hue, s: 100, l: 50, a: 1 })} 100%)`,
-            }}
-          >
-            <SliderThumb
-              className="box-content size-3 rounded-none"
-              style={{
-                background: `${hslaToHex({ h: hue, s: 100, l: 50, a: alpha / 100 })}`,
-              }}
-            />
-          </Slider>
-        </div>
+        <AlphaSlider />
       </div>
       <ColorInput />
     </div>
   );
-}
-
-export { ColorPicker };
+});

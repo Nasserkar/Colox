@@ -31,7 +31,7 @@
     background: linear-gradient(0deg, #000000, transparent);
     box-shadow: inset 0 0 0 0.5px #1717171a;
   }
-  .alpha-bg {
+  .bg-alpha {
     background-image: conic-gradient(
       transparent 90deg,
       #ffffff1a 90deg 180deg,
