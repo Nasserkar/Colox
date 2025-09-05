@@ -6,6 +6,8 @@ type ColorPickerState = {
   setHue: (newHue: number) => void;
   alpha: number;
   setAlpha: (newAlpha: number) => void;
+  color: string;
+  setColor: (newColor: string) => void;
 };
 
 type SliderState = {
@@ -31,6 +33,8 @@ export const useColorPicker = create<ColorPickerState>()((set) => ({
   setHue: (hue) => set({ hue }),
   alpha: 100,
   setAlpha: (alpha) => set({ alpha }),
+  color: "#ff0000",
+  setColor: (color) => set({ color }),
 }));
 
 export const useSlider = create<SliderState>()((set) => ({

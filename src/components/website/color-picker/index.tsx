@@ -12,6 +12,7 @@ function ColorCanvas() {
 
   const hue = useColorPicker((state) => state?.hue);
   const alpha = useColorPicker((state) => state?.alpha);
+  const setColor = useColorPicker((state) => state?.setColor);
 
   const size = useSlider((state) => state?.size);
   const setSize = useSlider((state) => state?.setSize);
@@ -37,8 +38,15 @@ function ColorCanvas() {
 
     setSliderBg(w.hex);
 
-    console.log(w.hex);
-  }, [hue, alpha, sX, sY, boxWidth, boxHeight, setSliderBg]);
+    const rc = paletteCoordsToColor({
+      x: sX / boxWidth,
+      y: sY / boxHeight,
+      h: hue,
+      a: alpha / 100,
+    });
+
+    setColor(rc.hex);
+  }, [hue, alpha, sX, sY, boxWidth, boxHeight, setSliderBg, setColor]);
 
   useLayoutEffect(() => {
     if (sliderRef?.current) {
