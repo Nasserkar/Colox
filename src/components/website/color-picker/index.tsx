@@ -288,24 +288,22 @@ const ColorInput = memo(() => {
   );
 
   return (
-    <div className="px-4 pt-2 pb-4">
-      <Input
-        variant={"lg"}
-        type="text"
-        id="color-input"
-        name="color-input"
-        autoCorrect="off"
-        autoComplete="off"
-        autoCapitalize="off"
-        minLength={0}
-        maxLength={9}
-        className="bg-white/10 text-purple-200 text-sm font-medium leading-4 lining-nums tabular-nums"
-        value={text}
-        onChange={handleColorInput}
-        onBlur={handleInputBlur}
-        onKeyDown={handleKeyDown}
-      />
-    </div>
+    <Input
+      variant={"lg"}
+      type="text"
+      id="color-input"
+      name="color-input"
+      autoCorrect="off"
+      autoComplete="off"
+      autoCapitalize="off"
+      minLength={0}
+      maxLength={9}
+      className="bg-white/10 text-purple-200 border-transparent text-sm font-medium leading-4 lining-nums tabular-nums"
+      value={text}
+      onChange={handleColorInput}
+      onBlur={handleInputBlur}
+      onKeyDown={handleKeyDown}
+    />
   );
 });
 
@@ -313,13 +311,17 @@ export const ColorPicker = memo(() => {
   return (
     <div id="color-picker" className="min-h-40 w-60 bg-black flex flex-col">
       <ColorCanvas />
-      <div className="px-4 py-2">
-        <HueSlider />
+      <div className="flex flex-col gap-4 px-4">
+        <div>
+          <HueSlider />
+        </div>
+        <div>
+          <AlphaSlider />
+        </div>
       </div>
-      <div className="px-4 py-2">
-        <AlphaSlider />
+      <div className="px-4 pb-4 mt-6">
+        <ColorInput />
       </div>
-      <ColorInput />
     </div>
   );
 });
