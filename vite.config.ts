@@ -25,7 +25,7 @@ export default defineConfig(({ mode }) => {
       port: Number(env.VITE_APP_PORT) || 3000,
     },
     build: {
-      outDir: "build",
+      outDir: "dist",
       sourcemap: true,
     },
     resolve: {
