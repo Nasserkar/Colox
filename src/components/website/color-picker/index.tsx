@@ -309,7 +309,7 @@ const ColorInput = memo(() => {
 
 export const ColorPicker = memo(() => {
   return (
-    <div id="color-picker" className="min-h-40 w-60 bg-black flex flex-col">
+    <div id="color-picker" className="min-h-40 w-60 bg-dark-100 flex flex-col">
       <ColorCanvas />
       <div className="flex flex-col gap-4 px-4">
         <div>

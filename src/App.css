@@ -2,6 +2,14 @@
 @import "tw-animate-css";
 
 :root {
+  --dark-50: #000000;
+  --dark-100: #171819;
+
+  --light-50: #ffffff;
+  --light-100: #fdfdfd;
+
+  --lavender: #783feb;
+
   --rainbow: linear-gradient(
     to right,
     #ff0000 0%,
@@ -73,6 +81,14 @@
 }
 
 @theme inline {
+  --color-dark-50: var(--dark-50);
+  --color-dark-100: var(--dark-100);
+
+  --color-light-50: var(--light-50);
+  --color-light-100: var(--light-100);
+
+  --color-lavender: var(--lavender);
+
   --background-image-rainbow: var(--rainbow);
 
   --font-inter: var(--font-inter), "sans-serif";
@@ -90,7 +106,7 @@
     @apply min-h-screen w-full;
   }
   body {
-    @apply bg-white text-black font-inter antialiased;
+    @apply bg-light-100 text-dark-100 font-inter antialiased;
   }
 }
 
