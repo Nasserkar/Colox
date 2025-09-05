@@ -288,14 +288,17 @@ const ColorInput = memo(() => {
   );
 
   return (
-    <div className="px-4 py-2">
+    <div className="px-4 pt-2 pb-4">
       <Input
+        variant={"lg"}
         type="text"
         id="color-input"
         name="color-input"
         autoCorrect="off"
         autoComplete="off"
         autoCapitalize="off"
+        minLength={0}
+        maxLength={9}
         className="bg-white/10 text-purple-200 text-sm font-medium"
         value={text}
         onChange={handleColorInput}
