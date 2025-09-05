@@ -39,6 +39,7 @@ function ColorCanvas() {
   const boxWidth = useSliderBox((state) => state?.width);
   const setBoxWidth = useSliderBox((state) => state?.setWidth);
   const boxBg = useSliderBox((state) => state?.bg);
+  const setBoxBg = useSliderBox((state) => state?.setBg);
 
   useEffect(() => {
     const w = paletteCoordsToColor({
@@ -58,6 +59,10 @@ function ColorCanvas() {
 
     setColor(rc.hex);
   }, [hue, alpha, sX, sY, boxWidth, boxHeight, setSliderBg, setColor]);
+
+  useEffect(() => {
+    setBoxBg(hslaToHex({ h: hue, s: 100, l: 50, a: 1 }));
+  }, [setBoxBg, hue]);
 
   useLayoutEffect(() => {
     if (sliderRef?.current) {
@@ -178,7 +183,12 @@ function ColorInput() {
 
   const handleInputBlur = useCallback(
     (e: React.FocusEvent<HTMLInputElement>) => {
-      const v = e?.target?.value;
+      let v = e?.target?.value;
+
+      if (v.trim() === "") {
+        v = "#ff0000";
+        setText(v);
+      }
 
       const { x, y, a, h } = getPaletteCoordsFromHex(v);
 
@@ -191,8 +201,6 @@ function ColorInput() {
       setY(ny);
       setHue(nh);
       setAlpha(na);
-
-      console.log(na);
     },
     [setAlpha, setHue, setX, setY]
   );
@@ -221,14 +229,11 @@ function ColorPicker() {
   const alpha = useColorPicker((state) => state?.alpha);
   const setAlpha = useColorPicker((state) => state?.setAlpha);
 
-  const setBoxBg = useSliderBox((state) => state?.setBg);
-
   const handleHueInput = useCallback(
     (e: number[]) => {
       setHue(e[0]);
-      setBoxBg(hslaToHex({ h: hue, s: 100, l: 50, a: 1 }));
     },
-    [setHue, setBoxBg, hue]
+    [setHue]
   );
 
   return (
