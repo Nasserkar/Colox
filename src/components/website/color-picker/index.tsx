@@ -168,8 +168,12 @@ const ColorInput = memo(() => {
   const color = useColorPicker((state) => state?.color);
   const setHue = useColorPicker((state) => state?.setHue);
   const setAlpha = useColorPicker((state) => state?.setAlpha);
+
   const setX = useSlider((state) => state?.setX);
   const setY = useSlider((state) => state?.setY);
+
+  const boxHeight = useSliderBox((state) => state?.height);
+  const boxWidth = useSliderBox((state) => state?.width);
 
   useEffect(() => {
     setText(color);
@@ -182,9 +186,9 @@ const ColorInput = memo(() => {
     []
   );
 
-  const handleInputBlur = useCallback(
-    (e: React.FocusEvent<HTMLInputElement>) => {
-      let v = e?.target?.value;
+  const applyColorFromText = useCallback(
+    (value: string) => {
+      let v = value;
 
       if (v.trim() === "") {
         v = "#ff0000";
@@ -193,8 +197,8 @@ const ColorInput = memo(() => {
 
       const { x, y, a, h } = getPaletteCoordsFromHex(v);
 
-      const nx = x * 240;
-      const ny = y * 200;
+      const nx = x * boxWidth;
+      const ny = y * boxHeight;
       const na = a * 100;
       const nh = h;
 
@@ -203,7 +207,23 @@ const ColorInput = memo(() => {
       setHue(nh);
       setAlpha(na);
     },
-    [setAlpha, setHue, setX, setY]
+    [setAlpha, setHue, setX, setY, boxWidth, boxHeight]
+  );
+
+  const handleInputBlur = useCallback(
+    (e: React.FocusEvent<HTMLInputElement>) => {
+      applyColorFromText(e.target.value);
+    },
+    [applyColorFromText]
+  );
+
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent<HTMLInputElement>) => {
+      if (e.key === "Enter") {
+        applyColorFromText(e.currentTarget.value);
+      }
+    },
+    [applyColorFromText]
   );
 
   return (
@@ -219,6 +239,7 @@ const ColorInput = memo(() => {
         value={text}
         onChange={handleColorInput}
         onBlur={handleInputBlur}
+        onKeyDown={handleKeyDown}
       />
     </div>
   );
