@@ -1,6 +1,6 @@
 import { Slider, SliderThumb } from "@/components/ui/slider";
 import { hslaToHex } from "@/lib/math/colors";
-import { clamp } from "@/lib/math/utils";
+import { clamp, paletteCoordsToColor } from "@/lib/math/utils";
 import { useColorPicker, useSlider, useSliderBox } from "@/store";
 import { useCallback, useEffect, useLayoutEffect, useRef } from "react";
 
@@ -11,6 +11,7 @@ function ColorCanvas() {
   const draggingRef = useRef(false);
 
   const hue = useColorPicker((state) => state?.hue);
+  const alpha = useColorPicker((state) => state?.alpha);
 
   const size = useSlider((state) => state?.size);
   const setSize = useSlider((state) => state?.setSize);
@@ -19,17 +20,25 @@ function ColorCanvas() {
   const sY = useSlider((state) => state?.y);
   const setY = useSlider((state) => state?.setY);
   const sBg = useSlider((state) => state?.bg);
+  const setSliderBg = useSlider((state) => state?.setBg);
 
   const boxHeight = useSliderBox((state) => state?.height);
   const setBoxHeight = useSliderBox((state) => state?.setHeight);
   const boxWidth = useSliderBox((state) => state?.width);
   const setBoxWidth = useSliderBox((state) => state?.setWidth);
-  const boxBg = useSlider((state) => state?.bg);
-  const setBoxBg = useSlider((state) => state?.setBg);
+  const boxBg = useSliderBox((state) => state?.bg);
 
   useEffect(() => {
-    setBoxBg(hslaToHex({ h: hue, s: 100, l: 50, a: 1 }));
-  }, [setBoxBg, hue]);
+    const w = paletteCoordsToColor({
+      x: sX / boxWidth,
+      y: sY / boxHeight,
+      h: hue,
+    });
+
+    setSliderBg(w.hex);
+
+    console.log(w.hex);
+  }, [hue, alpha, sX, sY, boxWidth, boxHeight, setSliderBg]);
 
   useLayoutEffect(() => {
     if (sliderRef?.current) {
@@ -134,6 +143,16 @@ function ColorPicker() {
   const alpha = useColorPicker((state) => state?.alpha);
   const setAlpha = useColorPicker((state) => state?.setAlpha);
 
+  const setBoxBg = useSliderBox((state) => state?.setBg);
+
+  const handleHueInput = useCallback(
+    (e: number[]) => {
+      setHue(e[0]);
+      setBoxBg(hslaToHex({ h: hue, s: 100, l: 50, a: 1 }));
+    },
+    [setHue, setBoxBg, hue]
+  );
+
   return (
     <div id="color-picker" className="min-h-40 w-60 bg-black flex flex-col">
       <ColorCanvas />
@@ -143,7 +162,7 @@ function ColorPicker() {
           max={360}
           step={1}
           className="bg-rainbow h-2.5 rounded-2xl"
-          onValueChange={(e) => setHue(e[0])}
+          onValueChange={handleHueInput}
         >
           <SliderThumb
             className="box-content size-3 rounded-none"

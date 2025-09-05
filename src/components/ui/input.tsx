@@ -183,11 +183,4 @@ function InputWrapper({
   );
 }
 
-export {
-  Input,
-  InputAddon,
-  InputGroup,
-  InputWrapper,
-  inputVariants,
-  inputAddonVariants,
-};
+export { Input, InputAddon, InputGroup, InputWrapper };

@@ -16,3 +16,9 @@ export type HSLA = {
   l: number;
   a?: number;
 };
+
+export type HSV = {
+  h: number;
+  s: number;
+  v: number;
+};
