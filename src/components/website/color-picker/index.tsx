@@ -299,7 +299,7 @@ const ColorInput = memo(() => {
         autoCapitalize="off"
         minLength={0}
         maxLength={9}
-        className="bg-white/10 text-purple-200 text-sm font-medium"
+        className="bg-white/10 text-purple-200 text-sm font-medium leading-4 lining-nums tabular-nums"
         value={text}
         onChange={handleColorInput}
         onBlur={handleInputBlur}
