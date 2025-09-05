@@ -137,7 +137,7 @@ function ColorPicker() {
   return (
     <div id="color-picker" className="min-h-40 w-60 bg-black flex flex-col">
       <ColorCanvas />
-      <div className="px-2 py-3">
+      <div className="px-4 py-2">
         <Slider
           defaultValue={[0]}
           max={360}
@@ -153,7 +153,7 @@ function ColorPicker() {
           />
         </Slider>
       </div>
-      <div className="px-2 py-3">
+      <div className="px-4 py-2">
         <div className="alpha-bg">
           <Slider
             defaultValue={[100]}
@@ -162,7 +162,7 @@ function ColorPicker() {
             className="h-2.5 rounded-2xl"
             onValueChange={(e) => setAlpha(e[0])}
             style={{
-              background: `linear-gradient( to right, transparent,${hslaToHex({ h: hue, s: 100, l: 50, a: 1 })})`,
+              background: `linear-gradient( to right, transparent 0%,${hslaToHex({ h: hue, s: 100, l: 50, a: 1 })} 100%)`,
             }}
           >
             <SliderThumb
