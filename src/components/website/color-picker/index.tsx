@@ -1,8 +1,19 @@
+import { Input } from "@/components/ui/input";
 import { Slider, SliderThumb } from "@/components/ui/slider";
 import { hslaToHex } from "@/lib/math/colors";
-import { clamp, paletteCoordsToColor } from "@/lib/math/utils";
+import {
+  clamp,
+  getPaletteCoordsFromHex,
+  paletteCoordsToColor,
+} from "@/lib/math/utils";
 import { useColorPicker, useSlider, useSliderBox } from "@/store";
-import { useCallback, useEffect, useLayoutEffect, useRef } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 
 function ColorCanvas() {
   const sliderRef = useRef<HTMLDivElement>(null);
@@ -145,6 +156,65 @@ function ColorCanvas() {
   );
 }
 
+function ColorInput() {
+  const [text, setText] = useState<string>("#ff0000");
+
+  const color = useColorPicker((state) => state?.color);
+  const setHue = useColorPicker((state) => state?.setHue);
+  const setAlpha = useColorPicker((state) => state?.setAlpha);
+  const setX = useSlider((state) => state?.setX);
+  const setY = useSlider((state) => state?.setY);
+
+  useEffect(() => {
+    setText(color);
+  }, [color]);
+
+  const handleColorInput = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setText(e.target?.value);
+    },
+    []
+  );
+
+  const handleInputBlur = useCallback(
+    (e: React.FocusEvent<HTMLInputElement>) => {
+      const v = e?.target?.value;
+
+      const { x, y, a, h } = getPaletteCoordsFromHex(v);
+
+      const nx = x * 240;
+      const ny = y * 200;
+      const na = a * 100;
+      const nh = h;
+
+      setX(nx);
+      setY(ny);
+      setHue(nh);
+      setAlpha(na);
+
+      console.log(na);
+    },
+    [setAlpha, setHue, setX, setY]
+  );
+
+  return (
+    <div className="px-4 py-2">
+      <Input
+        type="text"
+        id="color-input"
+        name="color-input"
+        autoCorrect="off"
+        autoComplete="off"
+        autoCapitalize="off"
+        className="bg-white/10 text-purple-200 font-medium"
+        value={text}
+        onChange={handleColorInput}
+        onBlur={handleInputBlur}
+      />
+    </div>
+  );
+}
+
 function ColorPicker() {
   const hue = useColorPicker((state) => state?.hue);
   const setHue = useColorPicker((state) => state?.setHue);
@@ -167,6 +237,7 @@ function ColorPicker() {
       <div className="px-4 py-2">
         <Slider
           defaultValue={[0]}
+          value={[hue]}
           max={360}
           step={1}
           className="bg-rainbow h-2.5 rounded-2xl"
@@ -184,6 +255,7 @@ function ColorPicker() {
         <div className="alpha-bg">
           <Slider
             defaultValue={[100]}
+            value={[alpha]}
             max={100}
             step={1}
             className="h-2.5 rounded-2xl"
@@ -201,6 +273,7 @@ function ColorPicker() {
           </Slider>
         </div>
       </div>
+      <ColorInput />
     </div>
   );
 }

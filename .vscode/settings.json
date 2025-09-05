@@ -16,8 +16,9 @@
   },
   "typescript.preferences.includePackageJsonAutoImports": "on",
   "explorer.compactFolders": false,
-    "tailwindCSS.experimental.classRegex": [
+  "tailwindCSS.experimental.classRegex": [
+    ["cva\\(((?:[^()]|\\([^()]*\\))*)\\)", "[\"'`]?([^\"'`]+)[\"'`]?"],
     ["cn\\(((?:[^()]|\\([^()]*\\))*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"]
   ],
-  "tailwindCSS.classFunctions": ["cn"]
+  "tailwindCSS.classFunctions": ["cva", "cn"]
 }
