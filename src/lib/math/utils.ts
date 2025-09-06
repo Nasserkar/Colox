@@ -79,11 +79,13 @@ function parseHexColor(hex: string): RGBA {
 }
 
 function rgbToHsv(rgb: RGBA): HSV {
-  const r = rgb.r / 255,
-    g = rgb.g / 255,
-    b = rgb.b / 255;
-  const max = Math.max(r, g, b),
-    min = Math.min(r, g, b);
+  const r = rgb.r / 255;
+  const g = rgb.g / 255;
+  const b = rgb.b / 255;
+
+  const max = Math.max(r, g, b);
+  const min = Math.min(r, g, b);
+
   const d = max - min;
   let h = 0;
   if (d !== 0) {

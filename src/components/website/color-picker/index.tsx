@@ -261,7 +261,7 @@ const ColorInput = memo(() => {
       const nx = x * boxWidth;
       const ny = y * boxHeight;
       const na = a * 100;
-      const nh = h;
+      const nh = Math.round(h);
 
       setX(nx);
       setY(ny);
